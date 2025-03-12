@@ -464,3 +464,455 @@ def factorial(n):
     return resultado
 
 ```
+
+## 5 Conjuntos (Sets)
+
+Los conjuntos son colecciones no ordenadas de elementos únicos. Se definen encerrando elementos separados por comas entre llaves.
+
+```python
+conjunto = {1, 2, 3, 4, 5}
+
+```
+
+### Creación de conjuntos
+
+```python
+# Conjunto vacío (no se puede usar {}, se confundiría con un diccionario)
+vacio = set()
+
+# Conjunto con elementos
+numeros = {1, 2, 3, 4, 5}
+
+# Usando la función set() con una secuencia
+conjunto = set([1, 2, 2, 3, 3, 3])  # Elimina duplicados automáticamente
+print(conjunto)  # {1, 2, 3}
+
+# Mediante comprensión de conjuntos
+pares = {x for x in range(10) if x % 2 == 0}
+print(pares)  # {0, 2, 4, 6, 8}
+
+```
+
+### Operaciones con conjuntos
+
+1. **Añadir y eliminar elementos**:
+
+```python
+conjunto = {1, 2, 3}
+conjunto.add(4)  # Añade un elemento
+print(conjunto)  # {1, 2, 3, 4}
+
+conjunto.remove(2)  # Elimina un elemento (error si no existe)
+print(conjunto)  # {1, 3, 4}
+
+conjunto.discard(5)  # Elimina si existe (no error si no existe)
+print(conjunto)  # {1, 3, 4}
+
+elemento = conjunto.pop()  # Elimina y devuelve un elemento arbitrario
+print(elemento)  # 1
+print(conjunto)  # {3, 4}
+
+conjunto.clear()  # Vacía el conjunto
+print(conjunto)  # set()
+
+```
+
+1. **Operaciones de conjuntos**:
+
+```python
+a = {1, 2, 3, 4}
+b = {3, 4, 5, 6}
+
+# Unión
+print(a | b)  # {1, 2, 3, 4, 5, 6}
+print(a.union(b))  # {1, 2, 3, 4, 5, 6}
+
+# Intersección
+print(a & b)  # {3, 4}
+print(a.intersection(b))  # {3, 4}
+
+# Diferencia
+print(a - b)  # {1, 2}
+print(a.difference(b))  # {1, 2}
+
+# Diferencia simétrica (elementos en a o b, pero no en ambos)
+print(a ^ b)  # {1, 2, 5, 6}
+print(a.symmetric_difference(b))  # {1, 2, 5, 6}
+
+```
+
+1. **Relaciones entre conjuntos**:
+
+```python
+a = {1, 2, 3}
+b = {1, 2, 3, 4, 5}
+c = {6, 7, 8}
+
+# Subconjunto
+print(a.issubset(b))  # True, todos los elementos de a están en b
+print(a <= b)  # True
+
+# Superconjunto
+print(b.issuperset(a))  # True, b contiene todos los elementos de a
+print(b >= a)  # True
+
+# Conjuntos disjuntos (sin elementos en común)
+print(a.isdisjoint(c))  # True, a y c no tienen elementos en común
+
+```
+
+### Aplicaciones en análisis de datos
+
+Los conjuntos son particularmente útiles para:
+
+1. **Eliminar duplicados**:
+
+```python
+datos = [1, 2, 2, 3, 3, 3, 4, 4, 4, 4]
+datos_unicos = list(set(datos))
+print(datos_unicos)  # [1, 2, 3, 4]
+
+```
+
+1. **Encontrar valores únicos**:
+
+```python
+lista_a = [1, 2, 3, 4, 5]
+lista_b = [4, 5, 6, 7, 8]
+
+# Elementos únicos en lista_a (no están en lista_b)
+unicos_a = set(lista_a) - set(lista_b)
+print(unicos_a)  # {1, 2, 3}
+
+# Elementos únicos en lista_b (no están en lista_a)
+unicos_b = set(lista_b) - set(lista_a)
+print(unicos_b)  # {6, 7, 8}
+
+# Elementos que están en una lista pero no en la otra
+unicos = set(lista_a) ^ set(lista_b)
+print(unicos)  # {1, 2, 3, 6, 7, 8}
+
+```
+
+1. **Búsqueda eficiente de pertenencia**:
+
+```python
+# Comprobar si una lista tiene valores duplicados
+def tiene_duplicados(lista):
+    return len(lista) != len(set(lista))
+
+print(tiene_duplicados([1, 2, 3, 4]))  # False
+print(tiene_duplicados([1, 2, 2, 3]))  # True
+
+```
+
+## 6. Estructuras de datos anidadas y comprensiones
+
+### Estructuras de datos anidadas
+
+Las estructuras de datos anidadas combinan diferentes tipos de colecciones y son fundamentales en el análisis de datos para representar información jerárquica.
+
+```python
+# Diccionario de listas
+estudiantes_por_curso = {
+    "Matemáticas": ["Ana", "Carlos", "Eva"],
+    "Física": ["David", "Beatriz"],
+    "Química": ["Fernando", "Gabriela"]
+}
+
+# Lista de diccionarios (formato JSON común)
+usuarios = [
+    {"id": 1, "nombre": "Ana", "email": "ana@ejemplo.com"},
+    {"id": 2, "nombre": "Carlos", "email": "carlos@ejemplo.com"},
+    {"id": 3, "nombre": "Eva", "email": "eva@ejemplo.com"}
+]
+
+# Diccionario de diccionarios
+empleados = {
+    "E001": {"nombre": "Ana", "departamento": "Ventas", "salario": 45000},
+    "E002": {"nombre": "Carlos", "departamento": "IT", "salario": 52000},
+    "E003": {"nombre": "Eva", "departamento": "Marketing", "salario": 48000}
+}
+
+```
+
+### Comprensiones avanzadas
+
+Las comprensiones pueden combinarse con estructuras anidadas para transformaciones complejas:
+
+```python
+# Filtrar empleados con salario > 50000
+salarios_altos = {
+    id: info for id, info in empleados.items()
+    if info["salario"] > 50000
+}
+
+# Extraer nombres de estudiantes de todos los cursos
+todos_estudiantes = [
+    estudiante
+    for curso in estudiantes_por_curso.values()
+    for estudiante in curso
+]
+
+# Crear diccionario de emails a partir de lista de usuarios
+emails = {
+    u["nombre"]: u["email"] for u in usuarios
+}
+
+```
+
+### Transformaciones complejas
+
+```python
+# Datos de ventas mensuales por producto
+ventas = {
+    "Producto A": [100, 150, 130, 120],
+    "Producto B": [80, 90, 85, 95],
+    "Producto C": [200, 180, 190, 210]
+}
+
+# Calcular ventas totales por producto
+totales = {producto: sum(cantidades) for producto, cantidades in ventas.items()}
+print(totales)  # {'Producto A': 500, 'Producto B': 350, 'Producto C': 780}
+
+# Encontrar el mes con mayores ventas para cada producto
+mejor_mes = {
+    producto: cantidades.index(max(cantidades)) + 1
+    for producto, cantidades in ventas.items()
+}
+print(mejor_mes)  # {'Producto A': 2, 'Producto B': 4, 'Producto C': 4}
+
+# Calcular el crecimiento porcentual del primer al último mes
+crecimiento = {
+    producto: (cantidades[-1] - cantidades[0]) / cantidades[0] * 100
+    for producto, cantidades in ventas.items()
+}
+print(crecimiento)  # {'Producto A': 20.0, 'Producto B': 18.75, 'Producto C': 5.0}
+
+```
+
+### 7.  Ejercicios
+## Ejercicio 1: Análisis de Calificaciones
+
+Utilizando lo aprendido sobre diccionarios y listas, escribe una función que analice un conjunto de calificaciones de estudiantes y devuelva:
+
+1. El promedio de calificaciones
+2. La calificación más alta y la más baja
+3. Un diccionario con los estudiantes agrupados por categoría:
+    - "Excelente": >=9
+    - "Bueno": >=7 y <9
+    - "Regular": >=6 y <7
+    - "Reprobado": <6
+
+**Datos de entrada:**
+
+```python
+calificaciones = [
+    {"nombre": "Ana", "calificacion": 9.5},
+    {"nombre": "Carlos", "calificacion": 8.2},
+    {"nombre": "Eva", "calificacion": 7.8},
+    {"nombre": "David", "calificacion": 5.9},
+    {"nombre": "Beatriz", "calificacion": 6.5},
+    {"nombre": "Fernando", "calificacion": 9.2},
+    {"nombre": "Gabriela", "calificacion": 4.8},
+    {"nombre": "Héctor", "calificacion": 7.0}
+]
+
+```
+
+### Solución Ejercicio 1:
+
+```python
+def analizar_calificaciones(calificaciones):
+    # 1. Calcular promedio
+    notas = [estudiante["calificacion"] for estudiante in calificaciones]
+    promedio = sum(notas) / len(notas)
+
+    # 2. Calificación más alta y más baja
+    maxima = max(notas)
+    minima = min(notas)
+
+    # 3. Agrupar por categoría
+    por_categoria = {
+        "Excelente": [],
+        "Bueno": [],
+        "Regular": [],
+        "Reprobado": []
+    }
+
+    for estudiante in calificaciones:
+        nota = estudiante["calificacion"]
+        nombre = estudiante["nombre"]
+
+        if nota >= 9:
+            por_categoria["Excelente"].append(nombre)
+        elif nota >= 7:
+            por_categoria["Bueno"].append(nombre)
+        elif nota >= 6:
+            por_categoria["Regular"].append(nombre)
+        else:
+            por_categoria["Reprobado"].append(nombre)
+
+    return {
+        "promedio": round(promedio, 2),
+        "maxima": maxima,
+        "minima": minima,
+        "por_categoria": por_categoria
+    }
+
+```
+
+---
+
+## Ejercicio 2: Procesamiento de Datos de Ventas
+
+Tienes datos de ventas de productos organizados por región y trimestre. Utiliza comprensiones de listas y diccionarios para:
+
+1. Calcular las ventas totales por producto
+2. Encontrar la región con mayores ventas totales
+3. Crear un ranking de productos por ventas totales
+
+**Datos de entrada:**
+
+```python
+ventas = {
+    "Norte": {
+        "Q1": {"Producto A": 150, "Producto B": 120, "Producto C": 180},
+        "Q2": {"Producto A": 170, "Producto B": 130, "Producto C": 190},
+        "Q3": {"Producto A": 160, "Producto B": 125, "Producto C": 185},
+        "Q4": {"Producto A": 180, "Producto B": 135, "Producto C": 195}
+    },
+    "Sur": {
+        "Q1": {"Producto A": 130, "Producto B": 110, "Producto C": 160},
+        "Q2": {"Producto A": 140, "Producto B": 115, "Producto C": 170},
+        "Q3": {"Producto A": 135, "Producto B": 120, "Producto C": 165},
+        "Q4": {"Producto A": 150, "Producto B": 125, "Producto C": 175}
+    },
+    "Este": {
+        "Q1": {"Producto A": 160, "Producto B": 130, "Producto C": 190},
+        "Q2": {"Producto A": 170, "Producto B": 140, "Producto C": 200},
+        "Q3": {"Producto A": 165, "Producto B": 135, "Producto C": 195},
+        "Q4": {"Producto A": 175, "Producto B": 145, "Producto C": 205}
+    }
+}
+
+```
+
+### Solución Ejercicio 2:
+
+```python
+def analizar_ventas(ventas):
+    # Inicializar estructura para ventas por producto
+    productos = set()
+    for region in ventas.values():
+        for trimestre in region.values():
+            productos.update(trimestre.keys())
+
+    ventas_por_producto = {producto: 0 for producto in productos}
+    ventas_por_producto_trimestre = {producto: {"Q1": 0, "Q2": 0, "Q3": 0, "Q4": 0} for producto in productos}
+    ventas_por_region = {region: 0 for region in ventas.keys()}
+
+    # Calcular ventas totales por producto y por región
+    for region, trimestres in ventas.items():
+        for trimestre, productos_venta in trimestres.items():
+            for producto, cantidad in productos_venta.items():
+                ventas_por_producto[producto] += cantidad
+                ventas_por_producto_trimestre[producto][trimestre] += cantidad
+                ventas_por_region[region] += cantidad
+
+    # 1. Ventas totales por producto
+    ventas_totales = ventas_por_producto
+
+    # 2. Trimestre con mayor venta para cada producto
+    mejor_trimestre = {
+        producto: max(trimestres.items(), key=lambda x: x[1])[0]
+        for producto, trimestres in ventas_por_producto_trimestre.items()
+    }
+
+    # 3. Región con mayores ventas totales
+    region_mayor_venta = max(ventas_por_region.items(), key=lambda x: x[1])[0]
+
+    # 4. Ranking de productos por ventas
+    ranking = sorted(ventas_por_producto.items(), key=lambda x: x[1], reverse=True)
+
+    return {
+        "ventas_totales_por_producto": ventas_totales,
+        "mejor_trimestre_por_producto": mejor_trimestre,
+        "region_mayor_venta": region_mayor_venta,
+        "ranking_productos": ranking
+    }
+
+```
+
+---
+
+## Ejercicio 3: Análisis de Texto
+
+Escribe una función que analice un texto para obtener:
+
+1. La frecuencia de cada palabra (ignorando mayúsculas/minúsculas)
+2. Las 5 palabras más comunes
+3. La cantidad de palabras únicas
+4. La longitud promedio de las palabras
+
+Utiliza tuplas, listas, diccionarios y conjuntos según sea apropiado. No consideres signos de puntuación como parte de las palabras.
+
+**Datos de entrada:**
+
+```python
+texto = """
+Python es un lenguaje de programación poderoso y fácil de aprender.
+Python tiene estructuras de datos eficientes y de alto nivel, y un
+enfoque simple pero efectivo a la programación orientada a objetos.
+La elegante sintaxis de Python y su tipado dinámico, junto con su
+naturaleza interpretada, hacen de él un lenguaje ideal para scripting
+y desarrollo rápido de aplicaciones en diversas áreas y en la mayoría
+de las plataformas. El intérprete de Python y la extensa biblioteca
+estándar están disponibles en formato fuente o binario sin costo para
+todas las plataformas, y pueden distribuirse libremente.
+"""
+
+```
+
+### Solución Ejercicio 3:
+
+```python
+def analizar_texto(texto):
+    import re
+    from collections import Counter
+
+    # Convertir a minúsculas y eliminar signos de puntuación
+    texto = texto.lower()
+    texto = re.sub(r'[^\w\s]', '', texto)
+
+    # Dividir en palabras
+    palabras = texto.split()
+
+    # 1. Frecuencia de cada palabra
+    frecuencia = {}
+    for palabra in palabras:
+        if palabra in frecuencia:
+            frecuencia[palabra] += 1
+        else:
+            frecuencia[palabra] = 1
+
+    # 2. Las 5 palabras más comunes (usando Counter)
+    contador = Counter(palabras)
+    palabras_comunes = contador.most_common(5)
+
+    # 3. Cantidad de palabras únicas
+    palabras_unicas = len(set(palabras))
+
+    # 4. Longitud promedio
+    longitud_total = sum(len(palabra) for palabra in palabras)
+    longitud_promedio = longitud_total / len(palabras)
+
+    return {
+        "frecuencia": frecuencia,
+        "palabras_comunes": palabras_comunes,
+        "palabras_unicas": palabras_unicas,
+        "longitud_promedio": round(longitud_promedio, 2)
+    }
+
+```
+
